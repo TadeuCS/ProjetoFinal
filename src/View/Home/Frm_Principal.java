@@ -10,23 +10,35 @@ import View.Cadastros.Frm_Locacao;
 import View.Cadastros.Frm_Produto;
 import View.Cadastros.Frm_Usuario;
 import View.Relatorios.Rel_Empr;
-import View.Relatorios.Rel_Fluxo_trans;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.JasperRunManager;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -144,7 +156,7 @@ public class Frm_Principal extends javax.swing.JFrame {
                     txt_senha.setText(null);
                     txt_usuario.requestFocus();
                 }
-                
+
             }
             validaPermissao(txt_userLogado.getText());
         } catch (Exception e) {
@@ -160,12 +172,15 @@ public class Frm_Principal extends javax.swing.JFrame {
         if (usuarioLogado.compareToIgnoreCase("administrador") == 0) {
             mi_usuario.setVisible(true);
             mi_configuracao.setVisible(true);
-        }else{
+        } else {
             mi_usuario.setVisible(false);
             mi_configuracao.setVisible(false);
         }
     }
 
+    public void gerarRelatorioCliente(){
+        
+    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -279,6 +294,11 @@ public class Frm_Principal extends javax.swing.JFrame {
         });
 
         btn_atalho_rel_emp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/RelEmprestimo.jpg"))); // NOI18N
+        btn_atalho_rel_emp.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btn_atalho_rel_empMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout atalho_rel_emprLayout = new javax.swing.GroupLayout(atalho_rel_empr);
         atalho_rel_empr.setLayout(atalho_rel_emprLayout);
@@ -595,8 +615,8 @@ public class Frm_Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_mi_produtoActionPerformed
 
     private void mi_relEmprActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mi_relEmprActionPerformed
-        Rel_Empr r1 = new Rel_Empr();
-        r1.setVisible(true);
+        Rel_Empr rel = new Rel_Empr();
+        rel.setVisible(true);
     }//GEN-LAST:event_mi_relEmprActionPerformed
 
     private void btn_sairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_sairActionPerformed
@@ -618,8 +638,6 @@ public class Frm_Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_atalho_locacaoMouseClicked
 
     private void atalho_rel_emprMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_atalho_rel_emprMouseClicked
-        Rel_Empr r = new Rel_Empr();
-        r.setVisible(true);
     }//GEN-LAST:event_atalho_rel_emprMouseClicked
 
     private void mi_clienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mi_clienteActionPerformed
@@ -638,11 +656,11 @@ public class Frm_Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_mi_locacaoActionPerformed
 
     private void mi_relClieCadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mi_relClieCadActionPerformed
-        System.out.println("gerar relatorio de clientes cadastrados");
+        gerarRelatorioCliente();
     }//GEN-LAST:event_mi_relClieCadActionPerformed
 
     private void mi_helpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mi_helpActionPerformed
-        System.out.println("menu ajuda");
+        JOptionPane.showMessageDialog(null, "Se Vira!");
     }//GEN-LAST:event_mi_helpActionPerformed
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
@@ -665,6 +683,10 @@ public class Frm_Principal extends javax.swing.JFrame {
         Frm_Conexao c = new Frm_Conexao();
         c.setVisible(true);
     }//GEN-LAST:event_mi_help1ActionPerformed
+
+    private void btn_atalho_rel_empMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_atalho_rel_empMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_atalho_rel_empMouseClicked
 
     /**
      * @param args the command line arguments
@@ -744,4 +766,5 @@ public class Frm_Principal extends javax.swing.JFrame {
     private javax.swing.JTextField txt_userLogado;
     private javax.swing.JTextField txt_usuario;
     // End of variables declaration//GEN-END:variables
+
 }

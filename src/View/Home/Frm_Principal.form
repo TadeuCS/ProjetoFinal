@@ -410,6 +410,9 @@
                   <Image iconType="3" name="/Img/RelEmprestimo.jpg"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btn_atalho_rel_empMouseClicked"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>

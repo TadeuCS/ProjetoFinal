@@ -198,7 +198,7 @@
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="txt_codigoCliente" min="-2" pref="70" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-                      <Component id="btn_carregaCliente" min="-2" pref="29" max="-2" attributes="0"/>
+                      <Component id="btn_carregaCliente" min="-2" pref="24" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
                       <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -212,7 +212,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="btn_carregaCliente" max="32767" attributes="0"/>
+                          <Component id="btn_carregaCliente" pref="0" max="32767" attributes="0"/>
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -252,6 +252,11 @@
               </Events>
             </Component>
             <Component class="javax.swing.JToggleButton" name="btn_carregaCliente">
+              <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/Img/refresh.gif"/>
+                </Property>
+              </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_carregaClienteActionPerformed"/>
               </Events>
@@ -311,7 +316,7 @@
                           <Group type="103" alignment="1" groupAlignment="0" attributes="0">
                               <Component id="txt_dataDevolucao" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="btn_carregarLocacao" alignment="1" max="32767" attributes="0"/>
+                                  <Component id="btn_carregarLocacao" alignment="1" pref="0" max="32767" attributes="0"/>
                                   <Group type="103" groupAlignment="3" attributes="0">
                                       <Component id="jLabel9" alignment="3" max="32767" attributes="0"/>
                                       <Component id="jLabel8" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -390,6 +395,11 @@
             <Component class="javax.swing.JTextField" name="txt_observacao">
             </Component>
             <Component class="javax.swing.JButton" name="btn_carregarLocacao">
+              <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/Img/refresh.gif"/>
+                </Property>
+              </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_carregarLocacaoActionPerformed"/>
               </Events>
@@ -446,7 +456,7 @@
                           <Group type="102" attributes="0">
                               <Component id="txt_cidade" min="-2" pref="571" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="btn_editaCep" min="-2" pref="33" max="-2" attributes="0"/>
+                              <Component id="btn_editaCep" min="-2" pref="24" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
@@ -458,14 +468,14 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="btn_carregaCep" alignment="0" max="32767" attributes="0"/>
+                          <Component id="btn_carregaCep" alignment="0" pref="0" max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="txt_cidade" alignment="3" max="32767" attributes="0"/>
                               <Component id="jLabel26" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel32" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="txt_cep" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="btn_editaCep" max="32767" attributes="0"/>
+                          <Component id="btn_editaCep" pref="0" max="32767" attributes="0"/>
                       </Group>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
@@ -536,6 +546,11 @@
             <Component class="javax.swing.JTextField" name="txt_complemento">
             </Component>
             <Component class="javax.swing.JToggleButton" name="btn_editaCep">
+              <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/Img/editar.gif"/>
+                </Property>
+              </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_editaCepActionPerformed"/>
               </Events>
@@ -546,6 +561,11 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JButton" name="btn_carregaCep">
+              <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/Img/refresh.gif"/>
+                </Property>
+              </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_carregaCepActionPerformed"/>
               </Events>

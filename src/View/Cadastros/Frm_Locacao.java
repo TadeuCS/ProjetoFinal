@@ -702,6 +702,7 @@ public class Frm_Locacao extends javax.swing.JFrame {
             }
         });
 
+        btn_carregaCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/refresh.gif"))); // NOI18N
         btn_carregaCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_carregaClienteActionPerformed(evt);
@@ -718,7 +719,7 @@ public class Frm_Locacao extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(txt_codigoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btn_carregaCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btn_carregaCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(24, 24, 24)
                 .addComponent(jLabel7)
                 .addGap(18, 18, 18)
@@ -730,7 +731,7 @@ public class Frm_Locacao extends javax.swing.JFrame {
             .addGroup(pnl_dadosClienteLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnl_dadosClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btn_carregaCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btn_carregaCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addGroup(pnl_dadosClienteLayout.createSequentialGroup()
                         .addGroup(pnl_dadosClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel6)
@@ -773,6 +774,7 @@ public class Frm_Locacao extends javax.swing.JFrame {
 
         jLabel12.setText("Observações:");
 
+        btn_carregarLocacao.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/refresh.gif"))); // NOI18N
         btn_carregarLocacao.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_carregarLocacaoActionPerformed(evt);
@@ -821,7 +823,7 @@ public class Frm_Locacao extends javax.swing.JFrame {
                     .addGroup(pnl_dadosLocacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(txt_dataDevolucao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(pnl_dadosLocacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btn_carregarLocacao, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btn_carregarLocacao, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                             .addGroup(pnl_dadosLocacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jLabel8)
@@ -843,6 +845,7 @@ public class Frm_Locacao extends javax.swing.JFrame {
 
         jLabel31.setText("Complemento:");
 
+        btn_editaCep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/editar.gif"))); // NOI18N
         btn_editaCep.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_editaCepActionPerformed(evt);
@@ -851,6 +854,7 @@ public class Frm_Locacao extends javax.swing.JFrame {
 
         jLabel32.setText("CEP:");
 
+        btn_carregaCep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/refresh.gif"))); // NOI18N
         btn_carregaCep.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_carregaCepActionPerformed(evt);
@@ -898,7 +902,7 @@ public class Frm_Locacao extends javax.swing.JFrame {
                     .addGroup(pnl_enderecoEntregaLayout.createSequentialGroup()
                         .addComponent(txt_cidade, javax.swing.GroupLayout.PREFERRED_SIZE, 571, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btn_editaCep, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btn_editaCep, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(1, 1, 1))
         );
         pnl_enderecoEntregaLayout.setVerticalGroup(
@@ -906,13 +910,13 @@ public class Frm_Locacao extends javax.swing.JFrame {
             .addGroup(pnl_enderecoEntregaLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnl_enderecoEntregaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btn_carregaCep, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btn_carregaCep, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addGroup(pnl_enderecoEntregaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(txt_cidade)
                         .addComponent(jLabel26)
                         .addComponent(jLabel32)
                         .addComponent(txt_cep, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btn_editaCep, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btn_editaCep, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addGroup(pnl_enderecoEntregaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnl_enderecoEntregaLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)

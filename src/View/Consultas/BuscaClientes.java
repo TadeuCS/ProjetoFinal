@@ -9,6 +9,7 @@ package View.Consultas;
 import View.Cadastros.Frm_Locacao;
 import static View.Consultas.BuscaClientes.con;
 import View.Home.Frm_Conexao;
+import View.Relatorios.Rel_Empr;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -219,6 +220,8 @@ public class BuscaClientes extends javax.swing.JFrame {
         if (tb_cliente.getSelectedRowCount() == 1) {
             Frm_Locacao l = new Frm_Locacao();
             l.buscaCliente((tb_cliente.getValueAt(tb_cliente.getSelectedRow(), 0).toString()));
+            Rel_Empr rel= new Rel_Empr();
+            rel.insereCodigo(tb_cliente.getValueAt(tb_cliente.getSelectedRow(), 0).toString(),tb_cliente.getValueAt(tb_cliente.getSelectedRow(), 1).toString());
             setVisible(false);
         } else {
             JOptionPane.showMessageDialog(null, "Selecione uma Linha da Tabela");
