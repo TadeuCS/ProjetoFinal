@@ -128,18 +128,19 @@ public class Frm_Conexao extends javax.swing.JFrame {
                 pw.println(txt_diretorio.getText());
             }
             JOptionPane.showMessageDialog(null, "Configurações salvas com Sucesso!");
+            JOptionPane.showMessageDialog(null, "Por Favor Reinicie a aplicação!");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "erro ao gravar arquivo! " + e.getMessage());
         }
         pw.close();
-        
+        setVisible(false);
 
 //Mesma coisa, salva a String s no arquivo.   
 //Mas lembre, se você for salvar várias linhas, é bom adcionar bw.newLine() depois de salvar cada linha  
     }
 
     public void leArquivo() throws IOException {
-        File file = new File("C:/NCM-app/src/Util/config.txt");
+        File file = new File("C:/ProjetoFinal/src/Util/config.TXT");
         FileReader fr = null;
         try {
             fr = new FileReader(file);

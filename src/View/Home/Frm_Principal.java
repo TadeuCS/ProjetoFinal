@@ -4,14 +4,29 @@
  */
 package View.Home;
 
+import Util.Criptografia;
 import View.Cadastros.Frm_Cliente;
 import View.Cadastros.Frm_Locacao;
 import View.Cadastros.Frm_Produto;
 import View.Cadastros.Frm_Usuario;
 import View.Relatorios.Rel_Empr;
 import View.Relatorios.Rel_Fluxo_trans;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -19,12 +34,81 @@ import javax.swing.JOptionPane;
  */
 public class Frm_Principal extends javax.swing.JFrame {
 
+    static Connection con = null;
+    static Statement st = null;
+    static ResultSet rs = null;
+    static PreparedStatement ps = null;
+    String caminho = "C:/ProjetoFinal/src/Util/config.TXT";
+    String diretorio = null;
+    String ip = null;
 
     public Frm_Principal() {
 
         initComponents();
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         txt_usuario.requestFocus();
+        try {
+            conecta();
+            camposOff();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        }
+    }
+
+    public void camposOff() {
+        btn_atalho_clientes.setEnabled(false);
+        btn_atalho_locacao.setEnabled(false);
+        btn_atalho_rel_emp.setEnabled(false);
+        mi_Cadastro.setEnabled(false);
+        mi_relatorios.setEnabled(false);
+        mi_configuracao.setEnabled(false);
+        mi_ajuda.setEnabled(false);
+        mi_movimentacao.setEnabled(false);
+    }
+
+    public void camposOn() {
+        btn_atalho_clientes.setEnabled(true);
+        btn_atalho_locacao.setEnabled(true);
+        btn_atalho_rel_emp.setEnabled(true);
+        mi_Cadastro.setEnabled(true);
+        mi_relatorios.setEnabled(true);
+        mi_configuracao.setEnabled(true);
+        mi_ajuda.setEnabled(true);
+        mi_movimentacao.setEnabled(true);
+    }
+
+    public void leArquivo() throws IOException {
+        File file = new File(caminho);
+        FileReader fr = null;
+        try {
+            fr = new FileReader(file);
+        } catch (FileNotFoundException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
+        BufferedReader br = new BufferedReader(fr);
+
+        String linha = br.readLine();
+        ip = linha;
+        String linha2 = br.readLine();
+        diretorio = linha2;
+    }
+
+    public void conecta() throws IOException, SQLException {
+        try {
+            leArquivo();
+            Class.forName("org.firebirdsql.jdbc.FBDriver");
+            con = DriverManager.getConnection(
+                    "jdbc:firebirdsql://" + ip + ":3050/" + diretorio,
+                    "SYSDBA",
+                    "masterkey");
+            st = con.createStatement();
+        } catch (ClassNotFoundException ex)//caso o driver não seja localizado  
+        {
+            JOptionPane.showMessageDialog(null, "Driver não encontrado!");
+        } catch (SQLException ex)//caso a conexão não possa se realizada  
+        {
+            JOptionPane.showMessageDialog(null, "Problemas na conexao com a fonte de dados");
+        }
     }
 
     public void antesdeLogar() {
@@ -38,9 +122,48 @@ public class Frm_Principal extends javax.swing.JFrame {
 
     }
 
-    public void entrar() {
-        pnl_login.setVisible(false);
-        txt_userLogado.setText("Administrador");
+    public void entrar(String usuario, String senha) {
+        senha = Criptografia.criptografaSenha(senha);
+        try {
+            if ((txt_usuario.getText().compareToIgnoreCase("admin") == 0)
+                    && (txt_senha.getText().compareToIgnoreCase("adm123") == 0)) {
+                pnl_login.setVisible(false);
+                txt_userLogado.setText("Administrador");
+                camposOn();
+            } else {
+                st = con.createStatement();
+                ResultSet rs = st.executeQuery("select * from usuario u where u.usuario like '" + usuario
+                        + "' and u.senha like '" + senha + "';");
+                if (rs.next()) {
+                    pnl_login.setVisible(false);
+                    txt_userLogado.setText(rs.getString("usuario"));
+                    camposOn();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Dados Invalidos");
+                    txt_usuario.setText(null);
+                    txt_senha.setText(null);
+                    txt_usuario.requestFocus();
+                }
+                
+            }
+            validaPermissao(txt_userLogado.getText());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Dados Invalidos" + e);
+            txt_usuario.setText(null);
+            txt_senha.setText(null);
+            txt_usuario.requestFocus();
+        }
+
+    }
+
+    public void validaPermissao(String usuarioLogado) {
+        if (usuarioLogado.compareToIgnoreCase("administrador") == 0) {
+            mi_usuario.setVisible(true);
+            mi_configuracao.setVisible(true);
+        }else{
+            mi_usuario.setVisible(false);
+            mi_configuracao.setVisible(false);
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -66,7 +189,6 @@ public class Frm_Principal extends javax.swing.JFrame {
         btn_sair = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         txt_senha = new javax.swing.JPasswordField();
-        btn_conexao = new javax.swing.JLabel();
         pnl_barraStatus = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         txt_userLogado = new javax.swing.JTextField();
@@ -80,6 +202,8 @@ public class Frm_Principal extends javax.swing.JFrame {
         mi_relatorios = new javax.swing.JMenu();
         mi_relClieCad = new javax.swing.JMenuItem();
         mi_relEmpr = new javax.swing.JMenuItem();
+        mi_configuracao = new javax.swing.JMenu();
+        mi_help1 = new javax.swing.JMenuItem();
         mi_ajuda = new javax.swing.JMenu();
         mi_help = new javax.swing.JMenuItem();
 
@@ -241,13 +365,6 @@ public class Frm_Principal extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
         jLabel3.setText("LOGIN");
 
-        btn_conexao.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/conexao.png"))); // NOI18N
-        btn_conexao.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btn_conexaoMouseClicked(evt);
-            }
-        });
-
         javax.swing.GroupLayout pnl_loginLayout = new javax.swing.GroupLayout(pnl_login);
         pnl_login.setLayout(pnl_loginLayout);
         pnl_loginLayout.setHorizontalGroup(
@@ -271,18 +388,14 @@ public class Frm_Principal extends javax.swing.JFrame {
                         .addGap(5, 5, 5))
                     .addGroup(pnl_loginLayout.createSequentialGroup()
                         .addComponent(jLabel3)
-                        .addGap(50, 50, 50)
-                        .addComponent(btn_conexao)
-                        .addGap(18, 18, 18))))
+                        .addGap(98, 98, 98))))
         );
         pnl_loginLayout.setVerticalGroup(
             pnl_loginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_loginLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnl_loginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
-                    .addComponent(btn_conexao, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(18, 20, Short.MAX_VALUE)
+                .addComponent(jLabel3)
+                .addGap(18, 22, Short.MAX_VALUE)
                 .addGroup(pnl_loginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel1)
                     .addComponent(txt_usuario, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -424,6 +537,22 @@ public class Frm_Principal extends javax.swing.JFrame {
 
         mb_menus.add(mi_relatorios);
 
+        mi_configuracao.setForeground(new java.awt.Color(51, 51, 51));
+        mi_configuracao.setText("Configuração");
+        mi_configuracao.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        mi_help1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F2, 0));
+        mi_help1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/lupa.png"))); // NOI18N
+        mi_help1.setText("Conexão");
+        mi_help1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mi_help1ActionPerformed(evt);
+            }
+        });
+        mi_configuracao.add(mi_help1);
+
+        mb_menus.add(mi_configuracao);
+
         mi_ajuda.setForeground(new java.awt.Color(51, 51, 51));
         mi_ajuda.setText("Ajuda");
         mi_ajuda.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -524,16 +653,18 @@ public class Frm_Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosed
 
     private void btn_entrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_entrarActionPerformed
-        entrar();
+        entrar(txt_usuario.getText(), txt_senha.getText());
     }//GEN-LAST:event_btn_entrarActionPerformed
 
-    private void btn_conexaoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_conexaoMouseClicked
-    }//GEN-LAST:event_btn_conexaoMouseClicked
-
     private void btn_atalho_clientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_atalho_clientesMouseClicked
-        Frm_Cliente c= new Frm_Cliente();
+        Frm_Cliente c = new Frm_Cliente();
         c.setVisible(true);
     }//GEN-LAST:event_btn_atalho_clientesMouseClicked
+
+    private void mi_help1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mi_help1ActionPerformed
+        Frm_Conexao c = new Frm_Conexao();
+        c.setVisible(true);
+    }//GEN-LAST:event_mi_help1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -549,16 +680,21 @@ public class Frm_Principal extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Frm_Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Frm_Principal.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Frm_Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Frm_Principal.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Frm_Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Frm_Principal.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Frm_Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Frm_Principal.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -577,7 +713,6 @@ public class Frm_Principal extends javax.swing.JFrame {
     private javax.swing.JLabel btn_atalho_clientes;
     private javax.swing.JLabel btn_atalho_locacao;
     private javax.swing.JLabel btn_atalho_rel_emp;
-    private javax.swing.JLabel btn_conexao;
     private javax.swing.JButton btn_entrar;
     private javax.swing.JButton btn_sair;
     private javax.swing.JPanel fundo_atalhos;
@@ -592,7 +727,9 @@ public class Frm_Principal extends javax.swing.JFrame {
     private javax.swing.JMenu mi_Cadastro;
     private javax.swing.JMenu mi_ajuda;
     private javax.swing.JMenuItem mi_cliente;
+    private javax.swing.JMenu mi_configuracao;
     private javax.swing.JMenuItem mi_help;
+    private javax.swing.JMenuItem mi_help1;
     private javax.swing.JMenuItem mi_locacao;
     private javax.swing.JMenu mi_movimentacao;
     private javax.swing.JMenuItem mi_produto;

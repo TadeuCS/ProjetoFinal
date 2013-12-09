@@ -6,6 +6,7 @@
 package View.Cadastros;
 
 import View.Home.Frm_Conexao;
+import java.awt.TextField;
 import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
 import java.io.File;
@@ -18,12 +19,17 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
+import javax.swing.text.MaskFormatter;
 
 /**
  *
@@ -338,10 +344,31 @@ public class Frm_Cliente extends javax.swing.JFrame {
                 txt_rua_ent.setText(rs.getString("rua"));
                 txt_numero_ent.requestFocus();
             } else {
-                JOptionPane.showConfirmDialog(null, "Deseja Cadastrar o Cep: " + cep + " ?", "", 1, JOptionPane.YES_NO_OPTION);
+                if ((txt_cep_ent.getText().compareTo("") != 0) && (txt_cidade_ent.getText().compareTo("") != 0) && (txt_bairro_ent.getText().compareTo("") != 0) && (txt_rua_ent.getText().compareTo("") != 0)) {
+                    if (JOptionPane.showConfirmDialog(null, "Deseja Cadastrar o Cep: " + cep + " ?", "", 0, JOptionPane.YES_NO_OPTION) == 0) {
+                        cadastraCep(txt_cep_ent.getText(), txt_cidade_ent.getText(),
+                                txt_bairro_ent.getText(), txt_rua_ent.getText());
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Preencha os campos em branco");
+                }
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
+        }
+    }
+
+    public void cadastraCep(String cep, String cidade, String bairro, String rua) {
+        try {
+            st = con.createStatement();
+            cep = cep.replaceAll("-", "");
+            PreparedStatement ps = con.prepareStatement("INSERT INTO CEP (CEP,CIDADE,BAIRRO,RUA) VALUES ('" + cep + "','" + cidade
+                    + "','" + bairro + "','" + rua + "');");
+            ps.executeUpdate();
+            ps.close();
+            JOptionPane.showMessageDialog(null, "Cep Cadastrado Com sucesso!");
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Erro" + ex);
         }
     }
 
@@ -374,6 +401,26 @@ public class Frm_Cliente extends javax.swing.JFrame {
                 txt_numero_cob.setText(txt_numero_ent.getText());
                 txt_complemento_cob.setText(txt_complemento_ent.getText());
             }
+        }
+    }
+
+    public void alteraMaskara(String tipo) {
+
+    }
+
+    public void validaEmail(String email) {
+        try {
+            Pattern p = Pattern.compile("^[\\w-]+(\\.[\\w-]+)*@([\\w-]+\\.)+[a-zA-Z]{2,7}$");
+            Matcher m = p.matcher(email);
+            boolean matchFound = m.matches();
+            if (matchFound) {
+                JOptionPane.showMessageDialog(null, "Email Valido");
+            } else {
+                JOptionPane.showMessageDialog(null, "Email Invalido");
+                txt_email.requestFocus();
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
         }
     }
 
@@ -531,6 +578,11 @@ public class Frm_Cliente extends javax.swing.JFrame {
             ex.printStackTrace();
         }
         txt_telefone.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txt_telefone.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txt_telefoneFocusGained(evt);
+            }
+        });
 
         jLabel7.setText("Tipo:");
 
@@ -538,11 +590,22 @@ public class Frm_Cliente extends javax.swing.JFrame {
 
         jLabel8.setText("Email:");
 
+        txt_email.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txt_emailFocusLost(evt);
+            }
+        });
+
         try {
             txt_cpf.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###.###.###-##")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        txt_cpf.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txt_cpfFocusGained(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnl_dadosPessoaisLayout = new javax.swing.GroupLayout(pnl_dadosPessoais);
         pnl_dadosPessoais.setLayout(pnl_dadosPessoaisLayout);
@@ -963,9 +1026,10 @@ public class Frm_Cliente extends javax.swing.JFrame {
 
     private void btn_apagarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_apagarActionPerformed
         if (tb_cliente.getSelectedRowCount() == 1) {
-            if(JOptionPane.showConfirmDialog(null, "Deseja Apagar o Cliente: "
-                    +tb_cliente.getValueAt(tb_cliente.getSelectedRow(), 0),"",0,JOptionPane.YES_NO_OPTION)==0)
-            deleta(Integer.parseInt(tb_cliente.getValueAt(tb_cliente.getSelectedRow(), 0).toString()));
+            if (JOptionPane.showConfirmDialog(null, "Deseja Apagar o Cliente: "
+                    + tb_cliente.getValueAt(tb_cliente.getSelectedRow(), 0), "", 0, JOptionPane.YES_NO_OPTION) == 0) {
+                deleta(Integer.parseInt(tb_cliente.getValueAt(tb_cliente.getSelectedRow(), 0).toString()));
+            }
         } else {
             JOptionPane.showMessageDialog(null, "Selecione uma Linha na Tabela");
         }
@@ -1017,6 +1081,18 @@ public class Frm_Cliente extends javax.swing.JFrame {
         enter(evt);
     }//GEN-LAST:event_txt_complemento_entKeyPressed
 
+    private void txt_cpfFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_cpfFocusGained
+        alteraMaskara(cbx_tipo.getSelectedItem().toString());
+    }//GEN-LAST:event_txt_cpfFocusGained
+
+    private void txt_telefoneFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_telefoneFocusGained
+        
+    }//GEN-LAST:event_txt_telefoneFocusGained
+
+    private void txt_emailFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_emailFocusLost
+       validaEmail(txt_email.getText());
+    }//GEN-LAST:event_txt_emailFocusLost
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -1028,16 +1104,21 @@ public class Frm_Cliente extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Frm_Cliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Frm_Cliente.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Frm_Cliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Frm_Cliente.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Frm_Cliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Frm_Cliente.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Frm_Cliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Frm_Cliente.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 

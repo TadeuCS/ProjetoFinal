@@ -318,16 +318,18 @@ public class Frm_Locacao extends javax.swing.JFrame {
 
     public void cadastraItens(String numlocacao) {
         try {
-
             DefaultTableModel model = (DefaultTableModel) tb_produtos.getModel();
-            PreparedStatement ps = con.prepareStatement("INSERT INTO Item_venda (CODLOCACAO,CODPRODUTO,QTDE,VALORUNIT) "
-                    + "VALUES (" + numlocacao + ",'" + tb_produtos.getValueAt(0, 0) + "','" + tb_produtos.getValueAt(0, 2)
-                    + "','" + tb_produtos.getValueAt(0, 3) + "');");
-            ps.executeUpdate();
-            ps.close();
-            st.executeUpdate("UPDATE PRODUTO SET DISPONIVEL = 'Nao' WHERE CODPROD =" + tb_produtos.getValueAt(0, 0));
-            st.close();
-            model.removeRow(0);
+            while (tb_produtos.getRowCount() > 0) {
+                st = con.createStatement();
+                PreparedStatement ps = con.prepareStatement("INSERT INTO Item_venda (CODLOCACAO,CODPRODUTO,QTDE,VALORUNIT) "
+                        + "VALUES (" + numlocacao + ",'" + tb_produtos.getValueAt(0, 0) + "','" + tb_produtos.getValueAt(0, 2)
+                        + "','" + tb_produtos.getValueAt(0, 3) + "');");
+                ps.executeUpdate();
+                ps.close();
+                st.executeUpdate("UPDATE PRODUTO SET DISPONIVEL = 'Nao' WHERE CODPROD =" + tb_produtos.getValueAt(0, 0));
+                st.close();
+                model.removeRow(0);
+            }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
         }
@@ -497,7 +499,14 @@ public class Frm_Locacao extends javax.swing.JFrame {
 
     public void excluiLocacao(String numLocacao) {
         try {
-            st = con.createStatement();
+
+            DefaultTableModel model = (DefaultTableModel) tb_produtos.getModel();
+            while (tb_produtos.getRowCount() > 0) {
+                st = con.createStatement();
+                st.executeUpdate("UPDATE PRODUTO SET DISPONIVEL = 'Sim' WHERE CODPROD =" + tb_produtos.getValueAt(0, 0));
+                st.close();
+                model.removeRow(0);
+            }
             PreparedStatement ps = con.prepareStatement("DELETE FROM Item_Venda WHERE CODLOCACAO=" + numLocacao + ";");
             PreparedStatement ps1 = con.prepareStatement("DELETE FROM Locacao WHERE CODLOCACAO=" + numLocacao + ";");
             ps.executeUpdate();
