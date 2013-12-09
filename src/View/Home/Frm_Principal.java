@@ -178,8 +178,14 @@ public class Frm_Principal extends javax.swing.JFrame {
         }
     }
 
-    public void gerarRelatorioCliente(){
-        
+    public void gerarRelatorioCliente() {
+        try {
+            HashMap filtro = new HashMap();
+            
+            JasperPrint print = JasperFillManager.fillReport("Relatorios/Cliente.jasper", filtro,con);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

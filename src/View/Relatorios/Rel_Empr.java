@@ -82,7 +82,7 @@ public class Rel_Empr extends javax.swing.JFrame {
         }
     }
 
-    public static Connection getConexao() {
+   public static Connection getConexao() {
         Connection conexao = null;
         conexao = con;
         return conexao;
@@ -93,8 +93,8 @@ public class Rel_Empr extends javax.swing.JFrame {
             HashMap filtro = new HashMap();
             filtro.put("dataInicio", txt_dataInicio.getDate());
             filtro.put("dataFinal", txt_dataFinal.getDate());
-            
-            JasperPrint print = JasperFillManager.fillReport("Relatorios/Cliente.jasper", filtro);
+
+            JasperPrint print = JasperFillManager.fillReport("Relatorios/Cliente.jasper", filtro,con);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
         }
@@ -266,7 +266,7 @@ public class Rel_Empr extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_cancelarActionPerformed
 
     private void btn_gerarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_gerarActionPerformed
-
+        gerarRelatorioCliente();
     }//GEN-LAST:event_btn_gerarActionPerformed
 
     private void txt_codclienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_codclienteActionPerformed
